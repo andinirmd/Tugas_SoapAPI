@@ -1,0 +1,61 @@
+<definitions name="AddressService"
+  targetNamespace="http://example.com/address"
+  xmlns:tns="http://example.com/address"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+  <types>
+    <xsd:schema targetNamespace="http://example.com/address">
+      <xsd:element name="AddressRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AddressResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="street" type="xsd:string"/>
+            <xsd:element name="city" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </types>
+
+  <message name="GetAddressRequest">
+    <part name="parameters" element="tns:AddressRequest"/>
+  </message>
+  <message name="GetAddressResponse">
+    <part name="parameters" element="tns:AddressResponse"/>
+  </message>
+
+  <portType name="AddressPortType">
+    <operation name="GetAddress">
+      <input message="tns:GetAddressRequest"/>
+      <output message="tns:GetAddressResponse"/>
+    </operation>
+  </portType>
+
+  <binding name="AddressBinding" type="tns:AddressPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="GetAddress">
+      <soap:operation soapAction="http://example.com/address/GetAddress"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+
+  <service name="AddressService">
+    <port name="AddressPort" binding="tns:AddressBinding">
+      <soap:address location="http://localhost:8000/addressService"/>
+    </port>
+  </service>
+
+</definitions>

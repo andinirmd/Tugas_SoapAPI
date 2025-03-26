@@ -1,0 +1,61 @@
+<definitions name="ContactService"
+  targetNamespace="http://example.com/contact"
+  xmlns:tns="http://example.com/contact"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+  <types>
+    <xsd:schema targetNamespace="http://example.com/contact">
+      <xsd:element name="ContactRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ContactResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="email" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </types>
+
+  <message name="GetContactRequest">
+    <part name="parameters" element="tns:ContactRequest"/>
+  </message>
+  <message name="GetContactResponse">
+    <part name="parameters" element="tns:ContactResponse"/>
+  </message>
+
+  <portType name="ContactPortType">
+    <operation name="GetContact">
+      <input message="tns:GetContactRequest"/>
+      <output message="tns:GetContactResponse"/>
+    </operation>
+  </portType>
+
+  <binding name="ContactBinding" type="tns:ContactPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="GetContact">
+      <soap:operation soapAction="http://example.com/contact/GetContact"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+
+  <service name="ContactService">
+    <port name="ContactPort" binding="tns:ContactBinding">
+      <soap:address location="http://localhost:8000/contactService"/>
+    </port>
+  </service>
+
+</definitions>
